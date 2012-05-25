@@ -143,6 +143,7 @@ module BubbleWrap
                                                       timeoutInterval:@timeout)
         @request.setHTTPMethod @method
         @request.setAllHTTPHeaderFields(@headers) if @headers
+        @request.HTTPShouldHandleCookies = false
 
         # @payload needs to be converted to data
         unless @method == "GET" || @payload.nil?
