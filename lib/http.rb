@@ -136,7 +136,7 @@ module BubbleWrap
           end
         end
         
-        p "HTTP building a NSRequest for #{url_string}"# if SETTINGS[:debug]
+        p "HTTP building a NSRequest for #{url_string}" if SETTINGS[:debug]
         @url = NSURL.URLWithString(url_string)
         @request = NSMutableURLRequest.requestWithURL(@url,
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy,
@@ -173,7 +173,7 @@ module BubbleWrap
       end
 
       def connection(connection, willSendRequest:request, redirectResponse:redirect_response)
-        puts "HTTP redirected #{request.description}" #if SETTINGS[:debug]
+        puts "HTTP redirected #{request.description}" if SETTINGS[:debug]
         new_request = request.mutableCopy
         # new_request.setValue(@credentials.inspect, forHTTPHeaderField:'Authorization') # disabled while we figure this one out
         new_request.setAllHTTPHeaderFields(@headers) if @headers
@@ -184,7 +184,7 @@ module BubbleWrap
 
       def connection(connection, didFailWithError: error)
         @request.done_loading!
-        p "HTTP Connection failed #{error.localizedDescription}"
+        # p "HTTP Connection failed #{error.localizedDescription}"
         @response.error_message = error.localizedDescription
         if @delegator.respond_to?(:call)
           @delegator.call( @response, self )
@@ -213,12 +213,12 @@ module BubbleWrap
           # NSURLCredentialPersistenceNone,
           # NSURLCredentialPersistenceForSession,
           # NSURLCredentialPersistencePermanent
-          p "auth challenged, answered with credentials: #{credentials.inspect}"
+          # p "auth challenged, answered with credentials: #{credentials.inspect}"
           new_credential = NSURLCredential.credentialWithUser(credentials[:username], password:credentials[:password], persistence:NSURLCredentialPersistenceForSession)
           challenge.sender.useCredential(new_credential, forAuthenticationChallenge:challenge)
         else
           challenge.sender.cancelAuthenticationChallenge(challenge)
-          p 'Auth Failed :('
+          #p 'Auth Failed :('
         end
       end
     end
